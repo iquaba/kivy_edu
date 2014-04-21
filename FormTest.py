@@ -19,6 +19,7 @@ class FormTestGame(GridLayout):
         self.questions = {}
         self.qcount = 0
         self.rightanswer = 0
+        self.result = "Wrong!"
 
         # Load questions from CSV
         with open ('questions.csv') as csvfile:
@@ -117,13 +118,27 @@ class FormTestGame(GridLayout):
 
         if bitfieldanswer == instance.rightanswer:
             instance.points += 10
-            print('Correct!')
+            instance.result = 'Correct! You now have '+str(instance.points)+' points.'
+            print(instance.result)
         else:
             instance.points -= 10
-            print ('Wrong!')
+            instance.result = 'Wrong! You now have '+str(instance.points)+' points.'
+            print (instance.result)
 
         print ('You now have ',instance.points, 'points.')
 
+        instance.destroyGUI()
+        #instance.popquiz()
+        instance.displayResult()
+
+    def displayResult(self):
+        self.cols = 1
+        self.add_widget(Label(text=self.result))
+        btnNewQuestion = Button(text='New Question')
+        btnNewQuestion.bind(on_press=self.NewQuestion)
+        self.add_widget(btnNewQuestion)
+
+    def NewQuestion(instance,value):
         instance.destroyGUI()
         instance.popquiz()
 
